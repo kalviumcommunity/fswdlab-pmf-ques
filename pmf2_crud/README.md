@@ -1,8 +1,4 @@
-# TaskSlate: Full CRUD Tasks API
 
-## Difficulty
-
-Medium.
 
 ## Problem Statement
 
