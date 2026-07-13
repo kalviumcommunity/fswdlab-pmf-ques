@@ -1,67 +1,72 @@
-# Question 2 — Node.js Express: Full CRUD Notes API
-
 ## Problem Statement
 
-You are building **TaskSlate**, a small note-tracking API for a shared workspace. The route structure already exists, and the in-memory store is already seeded, but the handlers are incomplete. Right now the API cannot reliably list records, create new ones, fetch one by id, replace existing data, apply a partial update, or delete a record safely.
+TaskSlate keeps a list of tasks for a shared workspace. The route structure already exists and the in-memory store is already seeded, but the handlers are incomplete. The API cannot yet reliably list tasks, create a new task, fetch one by id, replace a task, partially update a task, or delete a task safely.
 
-Your job is to complete `index.js` so the API supports a clean CRUD workflow using the required status codes and response shapes.
+Make the API work by completing `index.js`. The data lives in a plain in-memory store that is re-seeded before every run.
 
-This PMF is designed to test request parsing, validation, list handling, resource lookup, full updates, partial updates, deletion, and consistent JSON responses.
+## The Contract
 
----
+Status codes: `201` create, `200` read or update, `400` bad input, `404` missing, `204` delete.
+
+Success responds with `{ data: <payload> }` and errors respond with `{ error: "<safe string>" }`.
 
 ## Files to Edit
 
-- `index.js`: **This is the only file you need to modify.**
+You change **one file only**:
 
----
+1. `index.js` holds the in-memory tray and all five route handlers.
+
+Do not edit `spec.js` or `package.json`.
 
 ## Tasks
 
-1. Complete the route that returns all tasks.
-2. Complete the validation for task creation.
-3. Complete the task-creation logic.
-4. Complete the route that returns one task by id.
-5. Complete the missing-task handling for read by id.
-6. Complete the route that fully replaces a task.
-7. Complete the validation and missing-task handling for full replace.
-8. Complete the route that partially updates a task.
-9. Complete the route that deletes a task.
-10. Complete the missing-task handling for delete.
+Complete the handlers in `index.js`:
 
----
+1. `GET /tasks` returns all tasks wrapped in `{ data }`.
+2. `POST /tasks` validates the create input.
+3. `POST /tasks` creates and stores a new task.
+4. `GET /tasks/:id` returns the matching task.
+5. `GET /tasks/:id` returns a safe `404` error when the task is missing.
+6. `PUT /tasks/:id` fully replaces title, status, and assignee.
+7. `PUT /tasks/:id` returns the correct safe error when the input is invalid or the task does not exist.
+8. `PATCH /tasks/:id` partially updates only the provided valid fields.
+9. `DELETE /tasks/:id` removes the task and returns `204` with no body.
+10. `DELETE /tasks/:id` returns a safe `404` error when the task does not exist.
 
-## Input / Output Examples
+## Input and Output Examples
 
 ```javascript
-// List tasks
-// -> 200 with all tasks wrapped in { data }
+// POST /tasks    { "title": "Ship report", "status": "done", "assignee": "Nia" }
+//   -> 201  { "data": { "id": 3, "title": "Ship report", "status": "done", "assignee": "Nia" } }
 
-// Create task with invalid input
-// -> 400 with a safe error message
+// GET /tasks/1
+//   -> 200  { "data": { "id": 1, "title": "Prepare deck", "status": "todo", "assignee": "Asha" } }
 
-// Create task with valid input
-// -> 201 with created task data
+// GET /tasks/999
+//   -> 404  { "error": "Task not found" }
 
-// Missing task id
-// -> 404 with a safe error message
-
-// Full replace of an existing task
-// -> 200 with updated task data
-
-// Partial update of an existing task
-// -> 200 with updated task data
-
-// Delete existing task
-// -> 204 with no body
+// DELETE /tasks/1
+//   -> 204  (empty body)
 ```
 
----
+## Test Cases and Marks Distribution
 
-## How to Run
+*(10 tests × 2 marks = 20 marks)*
 
-1. Open the terminal in this folder.
+1. **GET all tasks:** `200` with the seeded tasks inside `{ data }`.
+2. **POST validation:** invalid create input returns `400 { error }`.
+3. **POST create:** valid body returns `201 { data }` with a generated id.
+4. **GET by id:** existing id returns `200 { data }`.
+5. **GET missing → 404:** unknown id returns `404 { error }`.
+6. **PUT replace:** full replacement returns `200 { data }`.
+7. **PUT validation:** invalid replacement input returns `400 { error }`.
+8. **PATCH partial update:** valid partial update returns `200 { data }`.
+9. **DELETE existing:** existing id returns `204` and removes the task.
+10. **DELETE missing:** unknown id returns `404 { error }`.
+
+## How to Test Your Solution
+
+1. Open the terminal.
 2. Run `npm install`.
 3. Run `npm test`.
-4. Complete the `FIX` markers in `index.js`.
-5. Run `npm test` again until all tests pass.
+4. All ten tests fail initially. Use the feedback to complete `index.js` until every test passes.
