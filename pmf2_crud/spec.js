@@ -1,7 +1,7 @@
 const request = require('supertest');
 const { app, tasks, resetState } = require('./index');
 
-describe('PMF 2 - Full CRUD Notes API', () => {
+describe('PMF 2 - Full CRUD Tasks API', () => {
   beforeEach(() => {
     resetState();
   });

@@ -1,3 +1,9 @@
+# SnapNote: Request Tracing Pipeline
+
+## Difficulty
+
+Medium.
+
 ## Problem Statement
 
 SnapNote tracks notes and request traces. Every request should receive a unique request id, request logs should record the method, path, and final status, timing logs should record how long each request took, and the write route should be protected by a header-based guard.

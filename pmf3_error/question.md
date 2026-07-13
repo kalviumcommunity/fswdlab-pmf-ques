@@ -1,3 +1,9 @@
+# ParcelPad: Safe Error Flow
+
+## Difficulty
+
+Medium.
+
 ## Problem Statement
 
 ParcelPad needs one safe error pipeline. Known application errors, unexpected bugs, rejected async work, and missing routes should all be handled consistently. Right now that behavior is incomplete.

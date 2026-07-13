@@ -1,6 +1,6 @@
 const { AppError, asyncHandler, notFoundHandler, errorHandler } = require('./index');
 
-describe('PMF 2 - Safe Error Flow', () => {
+describe('PMF 3 - Safe Error Flow', () => {
   function mockRes() {
     return {
       statusCode: null,

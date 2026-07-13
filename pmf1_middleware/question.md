@@ -1,4 +1,8 @@
+# SnapNote: Request Tracing Pipeline
 
+## Difficulty
+
+Medium.
 
 ## Problem Statement
 

@@ -1,3 +1,9 @@
+# TaskSlate: Full CRUD Tasks API
+
+## Difficulty
+
+Medium.
+
 ## Problem Statement
 
 TaskSlate keeps a list of tasks for a shared workspace. The route structure already exists and the in-memory store is already seeded, but the handlers are incomplete. The API cannot yet reliably list tasks, create a new task, fetch one by id, replace a task, partially update a task, or delete a task safely.
