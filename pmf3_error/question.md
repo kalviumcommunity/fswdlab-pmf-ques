@@ -1,55 +1,71 @@
-# Question 3 — Node.js Express: Safe Error Flow
-
 ## Problem Statement
 
-You are building **ParcelPad**, a small shipment API. The route handlers already perform basic work, but the error flow is badly designed. Known errors and unexpected bugs are mixed together, missing routes are not handled cleanly, asynchronous failures do not reliably reach the shared pipeline, and some responses expose internal details that should never reach the client.
+ParcelPad needs one safe error pipeline. Known application errors, unexpected bugs, rejected async work, and missing routes should all be handled consistently. Right now that behavior is incomplete.
 
-Your job is to complete `index.js` so known failures, unknown failures, and missing routes all pass through one safe and predictable error flow.
+Make the shared error flow work by completing `index.js`. The tests call the exported pieces directly.
 
-This PMF is designed to test custom error design, async forwarding, safe fallbacks, and centralised Express error responses.
+## The Contract
 
----
+Status codes: an `AppError` uses its own status code; any other error becomes `500`.
+
+Error responses must use `{ error: "<safe string>" }` only.
+
+Operational `AppError` instances should preserve their safe message. Unexpected plain `Error` objects must be hidden behind `Internal Server Error`.
 
 ## Files to Edit
 
-- `index.js`: **This is the only file you need to modify.**
+You change **one file only**:
 
----
+1. `index.js` holds the custom error type and all three reusable middleware utilities.
+
+Do not edit `spec.js` or `package.json`.
 
 ## Tasks
 
-1. Complete the custom error class setup.
-2. Store the status code for known application errors.
-3. Mark known application errors as operational.
-4. Complete the wrapper that returns middleware.
-5. Complete the logic that forwards rejected async work.
-6. Complete the creation of the not-found application error.
-7. Complete the not-found message so it uses the requested URL.
-8. Complete the branch for operational application errors.
-9. Complete the generic safe fallback for unexpected failures.
-10. Complete the final response shape so no internal details leak.
+Complete the shared error flow in `index.js`:
 
----
+1. Complete the custom `AppError` class setup.
+2. Store the status code on `AppError` instances.
+3. Mark `AppError` instances as operational.
+4. Return middleware from `asyncHandler`.
+5. Forward rejected async work to `next`.
+6. Create a not-found `AppError`.
+7. Build the not-found message using `req.originalUrl`.
+8. Handle operational `AppError` cases in the error handler.
+9. Handle unknown errors with a safe `500` fallback.
+10. Return only the safe `{ error }` response body.
 
-## Input / Output Examples
+## Input and Output Examples
 
 ```javascript
-// Known application error
-// -> preserve intended status and safe message
+// new AppError('Shipment not found', 404)
+//   -> 404  { "error": "Shipment not found" }
 
-// Missing route
-// -> becomes a 404 through the shared error pipeline
+// notFoundHandler on /missing
+//   -> 404  { "error": "Route not found: /missing" }
 
-// Unexpected internal failure
-// -> becomes a safe 500 response without leaking internals
+// new Error('db password leaked')
+//   -> 500  { "error": "Internal Server Error" }
 ```
 
----
+## Test Cases and Marks Distribution
 
-## How to Run
+*(10 tests × 2 marks = 20 marks)*
 
-1. Open the terminal in this folder.
+1. **Message stored:** `AppError` stores the provided message.
+2. **Status stored:** `AppError` stores the provided status code.
+3. **Operational flag:** `AppError` marks itself as operational.
+4. **Rejected async forwarding:** `asyncHandler` forwards rejected async errors to `next`.
+5. **Successful async pass-through:** `asyncHandler` does not call `next` on success.
+6. **404 forwarding:** `notFoundHandler` forwards a 404 `AppError`.
+7. **Operational response:** `errorHandler` returns an `AppError` status and safe message.
+8. **Safe fallback:** `errorHandler` hides plain `Error` messages behind a safe `500`.
+9. **No leak:** `errorHandler` returns only the safe `error` field.
+10. **End-to-end flow:** async throw → `next` → `errorHandler`.
+
+## How to Test Your Solution
+
+1. Open the terminal.
 2. Run `npm install`.
 3. Run `npm test`.
-4. Complete the `FIX` markers in `index.js`.
-5. Run `npm test` again until all tests pass.
+4. All ten tests fail initially. Use the feedback to complete `index.js` until every test passes.
