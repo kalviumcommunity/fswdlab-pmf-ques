@@ -1,8 +1,3 @@
-# ParcelPad: Safe Error Flow
-
-## Difficulty
-
-Medium.
 
 ## Problem Statement
 
