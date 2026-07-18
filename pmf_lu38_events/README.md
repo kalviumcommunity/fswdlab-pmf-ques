@@ -15,7 +15,7 @@ src/events/activityBus.js        # event contract + subscription lifecycle
 src/handlers/activityHandlers.js # independent audit + notification consumers
 ```
 
-Do not change `index.js` or `test/` files.
+Do not change `index.js` or the `spec/` files.
 
 ## Required Implementation
 
