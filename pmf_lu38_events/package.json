@@ -1,0 +1,7 @@
+{
+  "name": "pulseboard-activity-bus",
+  "version": "1.0.0",
+  "description": "Event-driven systems PMF task.",
+  "private": true,
+  "scripts": { "test": "node --test" }
+}
