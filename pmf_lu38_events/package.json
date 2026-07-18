@@ -1,7 +1,16 @@
 {
   "name": "pulseboard-activity-bus",
   "version": "1.0.0",
-  "description": "Event-driven systems PMF task.",
+  "description": "Event-driven systems PMF task: an in-process publish/subscribe activity bus over Node EventEmitter.",
   "private": true,
-  "scripts": { "test": "node --test" }
+  "main": "index.js",
+  "scripts": {
+    "test": "npm i && node spec/run-jasmine.js"
+  },
+  "keywords": ["nodejs", "events", "eventemitter", "pub-sub"],
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^5.1.0",
+    "jasmine-reporters": "^2.5.2"
+  }
 }
