@@ -13,7 +13,7 @@ Build small in-process event bus. Producer publishes one fact: `post:created`. C
 * `src/events/activityBus.js`: event contract and subscription lifecycle.
 * `src/handlers/activityHandlers.js`: independent audit/notification consumers.
 
-Do not edit `index.js` or the files in `spec/`.
+Do not edit `index.js` or any test files.
 
 ---
 
